@@ -18,7 +18,7 @@ if __name__ == "__main__":
     ra = table['RA'][0]
     dec = table['DEC'][0]
 
-    print ("Star ID: {}\n\tRA: {}\n\tDEC: {}".format(
+    print ("Object ID: {}\n\tRA: {}\n\tDEC: {}".format(
         star_id,
         ra, dec
     ))

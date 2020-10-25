@@ -1,13 +1,14 @@
 # Custom Shell Commands
 ### By Langston Howley
 
-> The idea of this project is to have custom commands that I can run in the terminal for personal convinience.
+The idea of this project is to have custom commands that I can run in the terminal for personal convinience.
 
 > The current functions include:
 - weather
+- starsearch
 
 > Additions coming soon
-- starsearch
+
 
 
 ## Installation
@@ -47,3 +48,25 @@ Current Weather Los Angeles:
         Wind: 3 m/s @ 238°
 ```
 
+## Star Search Command
+
+The `starsearch` command allows a user to get current positional information for a speified star/galaxy/nebula. Its return includes: 
+
+- ID based on SIMBAD identification
+- Right Ascension Data (h:m:s)
+- Declination Data (°:m:s)
+
+Usage:
+```bash
+starsearch -s STAR_NAME
+    -s STAR_NAME: Specify the star/galaxy/nebula
+	-h: Help
+	
+Example: starsearch -s 'Andromeda Galaxy'
+```
+Example Output:
+```
+Object ID: M  31
+        RA: 00 42 44.330
+        DEC: +41 16 07.50
+```

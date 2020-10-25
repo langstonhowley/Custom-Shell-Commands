@@ -1,7 +1,32 @@
 #!/bin/bash 
 
 function starsearch(){
-	echo 'You entered: ' $1
+	unset STAR 
+
+	USAGE=("Usage: $0 -s STAR_NAME
+	\t-s STAR_NAME: Specify the star/galaxy/nebula
+	\t-h: Help
+	
+Example: starsearch -s 'Andromeda Galaxy'\n")
+
+	while getopts "s:h" opt; do
+		case ${opt} in
+			s)	STAR=$OPTARG ;;
+			h) 
+				echo $USAGE
+				kill -INT $$
+			;;
+		esac
+	done
+
+	if [[ -z $STAR ]]
+	then
+		echo "ERROR: No Object Specified!\n"
+		echo $USAGE
+		kill -INT $$
+	fi
+
+	$CUSTOM_COMMANDS_HOME/env/bin/python3 $CUSTOM_COMMANDS_HOME/python/starsearch.py -s $STAR
 }
 
 function weather(){
@@ -24,7 +49,6 @@ Example: weather -i -c 'Los Angeles'\n")
 				echo $USAGE
 				kill -INT $$
 			;;
-
 		esac
 	done
 
