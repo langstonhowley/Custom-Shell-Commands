@@ -10,7 +10,7 @@ if __name__ == '__main__':
     CITY = ''
     UNITS = ''
 
-    opts, args = getopt.getopt(sys.argv[1:],"c:mi",["city=,metric,imperial"])
+    opts, args = getopt.getopt(sys.argv[1:],"c:mi")
     for opt,arg in opts:
         if(opt in ('-c','--city')):
             CITY = arg

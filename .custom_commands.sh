@@ -13,7 +13,7 @@ function weather(){
 	\t-c CITY_NAME: Specify the city
 	\t-h: Help
 	
-Example: weather -i -c 'Detroit'\n")
+Example: weather -i -c 'Los Angeles'\n")
 
 	while getopts "c:mih" opt; do
 		case ${opt} in

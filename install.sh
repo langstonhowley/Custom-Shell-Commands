@@ -10,11 +10,11 @@ echo -e "source $DIR/.custom_commands.sh" >> $HOME/.bash_profile
 
 echo "CUSTOM_COMMANDS_HOME set to $DIR"
 
-virtualenv env -p python3
-source env/bin/activate
+virtualenv $DIR/env -p python3
+source $DIR/env/bin/activate
 pip3 install -r $DIR/python/requirements.txt
 touch $DIR/python/.env
 echo -e "WEATHER_API_KEY = " >> $DIR/python/.env
-echo -e "Don't forget to put a Weather API Key in /python/.env\nMore info @ https://openweathermap.org/appid"
+echo -e "\nDon't forget to put a Weather API Key in /python/.env\nMore info @ https://openweathermap.org/appid"
 source $HOME/.bash_profile
 cd $DIR
