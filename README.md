@@ -3,11 +3,10 @@
 
 The idea of this project is to have custom commands that I can run in the terminal for personal convinience.
 
-> The current functions include:
+> The current commands include:
 - weather
 - starsearch
 
-> Additions coming soon
 
 
 
@@ -27,9 +26,11 @@ The idea of this project is to have custom commands that I can run in the termin
 The `weather` command allows a user to get current weather information for a speified location. Its return includes: 
 
 - Current Weather
+    > Toggle with the `--noC` option
 - Pressure & Humidity
 - Wind Data
 - 5-day Forecast
+    > Toggle with the `--noF` option
 
 Usage:
 ```bash
@@ -68,8 +69,8 @@ Current Weather Los Angeles:
 The `starsearch` command allows a user to get current positional information for a speified star/galaxy/nebula. Its return includes: 
 
 - ID based on SIMBAD identification
-- Right Ascension Data (h:m:s)
-- Declination Data (°:m:s)
+- Right Ascension Data (h : m : s)
+- Declination Data (° : m : s)
 
 Usage:
 ```bash
