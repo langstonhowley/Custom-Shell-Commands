@@ -3,20 +3,21 @@
 
 The idea of this project is to have custom commands that I can run in the terminal for personal convinience.
 
-> The current functions include:
+> The current commands include:
 - weather
 - starsearch
 
-> Additions coming soon
 
 
 
 ## Installation
 
 ```bash
-    #open your terminal and type these commands to install
+    # clone the repository into your current directory 
     git clone https://github.com/langstonhowley/Custom-Shell-Commands
+    # allow the install script to be run on your machine
     chmod +x Custom-Shell-Commands/install.sh
+    # run the install script
     Custom-Shell-Commands/install.sh
 ```
 
@@ -25,27 +26,42 @@ The idea of this project is to have custom commands that I can run in the termin
 The `weather` command allows a user to get current weather information for a speified location. Its return includes: 
 
 - Current Weather
-    - At your location and the highest and lowest temp recorded in that location at runtime.
+    > Toggle with the `--noC` option
 - Pressure & Humidity
 - Wind Data
+- 5-day Forecast
+    > Toggle with the `--noF` option
 
 Usage:
 ```bash
-weather -m|-i  -c CITY_NAME
-    -m: Use metric units (°C, m/s)
-    -i: Use imperial units (°F, mph)
-    -c CITY: Specify the city
+Usage: 
+	weather -i|-m [--noF | --noC] <city_name>
+	weather -h
+        <city_name> : Specify the city
+        -m : Use Metric (°C only)
+        -i : Use Imperial (°F only)
+        --noC : omit current weather data (forecast only)
+        --noF : omit 5-day forecast data (current only)
+        -h : Help	
 
-Example: weather -m -c "Los Angeles"
+Example: weather -i "Los Angeles"
 ```
 
 Example Output:
 ```
 Current Weather Los Angeles:
 
-        Current Temp: 16.69, 18/14.44 (°C)
-        Pressure: 1013 hPa | Humidity: 68 %
-        Wind: 3 m/s @ 238°
+	Current Temp: 55.44, 71.55/55.44 (°F)
+	Pressure: 1013 hPa | Humidity: 71 %
+	Wind: 6.17 mph @ 51°
+
+5-day Forecast Los Angeles:
+
+	27/10/2020: 76.42/62.56 (°F) clear sky
+	28/10/2020: 76.33/64.06 (°F) clear sky
+	29/10/2020: 77.99/64.87 (°F) clear sky
+	30/10/2020: 78.82/65.53 (°F) clear sky
+	31/10/2020: 81.39/67.03 (°F) broken clouds
 ```
 
 ## Star Search Command
@@ -53,8 +69,8 @@ Current Weather Los Angeles:
 The `starsearch` command allows a user to get current positional information for a speified star/galaxy/nebula. Its return includes: 
 
 - ID based on SIMBAD identification
-- Right Ascension Data (h:m:s)
-- Declination Data (°:m:s)
+- Right Ascension Data (h : m : s)
+- Declination Data (° : m : s)
 
 Usage:
 ```bash

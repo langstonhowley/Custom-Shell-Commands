@@ -1,49 +1,82 @@
 from decouple import config
 import requests
 import sys, getopt
+from datetime import datetime as dt
 
 
 if __name__ == '__main__':
 
     BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
+    CURRENT_URL = "https://api.openweathermap.org/data/2.5/onecall?exclude=minutely,hourly,alerts"
+    FORECAST_URL = "https://api.openweathermap.org/data/2.5/onecall?exclude=current,minutely,hourly,alerts"
     KEY = config('WEATHER_API_KEY')
-    CITY = ''
+    CITY = sys.argv[-1]
     UNITS = ''
+    OMIT = ''
 
-    opts, args = getopt.getopt(sys.argv[1:],"c:mi")
+    opts, args = getopt.getopt(sys.argv[1:],"mi",['noC', 'noF'])
     for opt,arg in opts:
-        if(opt in ('-c','--city')):
-            CITY = arg
-        elif(opt in ('-m', '--metric')):
+        if(opt in ('-m')):
             UNITS = 'metric'
-        elif(opt in ('-i', '--imperial')):
+        elif(opt in ('-i')):
             UNITS = 'imperial'
+        elif(opt in ('--noC')):
+#            print('No current')
+            OMIT = 'c'
+        elif(opt in ('--noF')):
+#            print('No forecast')
+            OMIT = 'f'
 
-    #TODO: cahnge q and units to parameters
+#    print('Checked options and got city: {}, units: {}, omit: {}.\nSending request...'.format(
+#        CITY,UNITS,OMIT
+#    ))
+
     payload = {'appid': KEY, 'q': CITY, 'units': UNITS}
+    res = requests.get(BASE_URL,params=payload).json()
+#    print('Got response from first request')
+    longitude = res['coord']['lon']
+    lattitude = res['coord']['lat']
 
-    r = requests.get(BASE_URL,params=payload).json()
-    pre_data = r["weather"]
-    sys_data = r["sys"]
-    weather_data = r["main"]
-    wind_data = r["wind"]
-    CITY = r["name"]
+    payload = {'appid': KEY, 'lat': lattitude, 'lon': longitude, 'units': UNITS}
+    res = requests.get(CURRENT_URL, params=payload).json()
 
+    current_data = res["current"]
+    daily_data = res["daily"]
+    #weather_data = res["main"]
+    #wind_data = res["wind"]
+    weather_string = ''
 
-    weather_string = ("\nCurrent Weather {}:\n\n"
-                       "\tCurrent Temp: {}, {}/{} (°{})\n"
-                       "\tPressure: {} hPa | Humidity: {} %\n"
-                       "\tWind: {} {} @ {}°\n").format(
-                           CITY,
-                           weather_data["temp"], weather_data["temp_max"], weather_data["temp_min"],'C' if UNITS=='metric' else 'F',
-                           weather_data["pressure"], weather_data['humidity'],
-                           wind_data["speed"], 'm/s' if UNITS=='metric' else 'mph', wind_data["deg"])
+    if(OMIT is not 'c'):
+        weather_string = ("\nCurrent Weather {}:\n\n"
+                        "\tCurrent Temp: {}, {}/{} (°{})\n"
+                        "\tPressure: {} hPa | Humidity: {} %\n"
+                        "\tWind: {} {} @ {}°\n").format(
+                            CITY,
+                            current_data["temp"], daily_data[0]["temp"]["max"], daily_data[0]["temp"]["min"],'C' if UNITS=='metric' else 'F',
+                            current_data["pressure"], current_data['humidity'],
+                            current_data["wind_speed"], 'm/s' if UNITS=='metric' else 'mph', current_data["wind_deg"])
 
+#    print('Got Long: {}, Lat: {}\nSending second request...'.format(longitude,lattitude))
 
+    forecast_string = ''
+    if(OMIT is not 'f'):
+        #payload = {'appid': KEY, 'lat': lattitude, 'lon': longitude, 'units': UNITS}
+        #res = requests.get(FORECAST_URL, params=payload).json()
+        forecast_string = "5-day Forecast {}:\n\n".format(CITY)
+#       print('Got response from second request')
+
+        for f in daily_data[1:6]:
+            time = dt.fromtimestamp(f['dt'])
+            day_forecast_string = '\t{}/{}/{}: {}/{} (°{}) {}\n'.format(
+                time.day, time.month, time.year,
+                f['temp']['max'], f['temp']['min'], 'C' if UNITS=='metric' else 'F',
+                f['weather'][0]['description']
+            )
+            forecast_string = forecast_string + day_forecast_string
+#           print(day_forecast_string)
+        
     print(weather_string)
-
-    #r.json()
-    #print(weather_data, r)
+    print(forecast_string)
     
 
 
