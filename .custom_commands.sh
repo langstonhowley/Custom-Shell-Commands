@@ -1,32 +1,64 @@
 #!/bin/bash 
 
 function starsearch(){
-	unset STAR 
+	unset OBJECT LIMIT RADIUS VELO ROT DIST
 
-	USAGE=("Usage: $0 -s STAR_NAME
-	\t-s STAR_NAME: Specify the star/galaxy/nebula
-	\t-h: Help
-	
-Example: starsearch -s 'Andromeda Galaxy'\n")
+	USAGE=("Usage:
+    $0 [options] [-l|--limit LIMIT] <-r|--radius RADUIS> <star_name>
+	$0 -h
+    options:
+        -h|--help: Show usage
+        -r|--radius RADIUS: arcminute formatted string: '0d6m0s' or degree value: 0.1 (1° = 60 arcmin)
+        -l|--limit LIMIT: limit the amount of objects returned
+        -v|--velo: show velocity data 
+        -o|--rot: show rotational velocity data
+        -d|--dist: show distance data
+		
+Example: $0 -r '0d6m0s' -l 10 -d Andromeda")
 
-	while getopts "s:h" opt; do
+	while getopts ":hr:l:vod-:" opt; do
 		case ${opt} in
-			s)	STAR=$OPTARG ;;
 			h) 
 				echo $USAGE
 				kill -INT $$
 			;;
+			r)
+				RADIUS="-r $OPTARG"
+			;;
+			l)
+				LIMIT="-l $OPTARG"
+			;;
+			v)
+				VELO='-v'
+			;;
+			o)
+				ROT='-o'
+			;;
+			d)
+				DIST='-d'
+			;;
 		esac
 	done
+	shift $(( OPTIND - 1 ))
 
-	if [[ -z $STAR ]]
+	OBJECT=$1
+
+	if [[ -z $OBJECT ]]
 	then
-		echo "ERROR: No Object Specified!\n"
+		echo "ERROR: No object specified!\n"
 		echo $USAGE
 		kill -INT $$
 	fi
 
-	$CUSTOM_COMMANDS_HOME/env/bin/python3 $CUSTOM_COMMANDS_HOME/python/starsearch.py -s $STAR
+	# if [[ -z $RADIUS ]]
+	# then
+	# 	echo "ERROR: No radius specified!\n"
+	# 	echo $USAGE
+	# 	kill -INT $$
+	# fi
+
+	#$CUSTOM_COMMANDS_HOME/env/bin/python3 $CUSTOM_COMMANDS_HOME/python/starsearch.py -r $RADIUS $VELO $ROT $DIST $OBJECT
+	echo "$CUSTOM_COMMANDS_HOME/env/bin/python3 $CUSTOM_COMMANDS_HOME/python/starsearch.py $RADIUS $LIMIT $VELO $ROT $DIST $OBJECT"
 }
 
 function weather(){

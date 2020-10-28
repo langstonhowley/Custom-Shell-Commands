@@ -5,7 +5,10 @@ import sys, getopt
 
 
 if __name__ == "__main__":
-    STAR = ''
+    pass
+    simbad = Simbad()
+
+    STAR = sys.argv[-1]
 
     opts, args = getopt.getopt(sys.argv[1:],'s:')
     for opt,arg in opts:
