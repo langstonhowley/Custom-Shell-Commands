@@ -2,7 +2,7 @@
 
 > By Langston Howley
 
-The idea of this project is to have custom commands that users can run in the terminal for personal convinience and entertainment.
+The idea of this project is to have custom commands that users can run in the terminal for personal convenience and entertainment.
 
 > The current commands include:
 
